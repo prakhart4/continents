@@ -9,7 +9,7 @@ Choose a continent using the selector
 Step 2:
 Click explore.
 
-A new page will open that shows all the countrien in the selected continent with details.</br>
+A new page will open that shows all the countries in the selected continent with details.</br>
 
 Packages used: @apollo/client, react-router-dom, @mui/material, mui/icons-material.</br>
 
