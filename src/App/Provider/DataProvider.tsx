@@ -63,3 +63,38 @@ export const useData = () => {
   }
   return dataProvider;
 };
+
+type ID = string; //continent codes
+
+export type Country = {
+  code: ID,
+  name: String,
+  native: String,
+  phone: String,
+  continent: Continent,
+  capital: String,
+  currency: String,
+  languages: [Language],
+  emoji: String,
+  emojiU: String,
+  states: [State],
+}
+
+export type Continent = {
+  code: ID,
+  name: String,
+  countries: [Country],
+}
+
+type Language = {
+  code: ID,
+  name: String,
+  native: String,
+  rtl: Boolean,
+}
+
+type State = {
+  code: String,
+  name: String,
+  country: Country,
+}

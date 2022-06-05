@@ -1,10 +1,10 @@
 import { Close, Info, Refresh } from '@mui/icons-material';
 import { Alert, AppBar, Box, Button, Card, CircularProgress, Collapse, FormControl, IconButton, InputLabel, MenuItem, Popover, Select, Toolbar, Typography } from '@mui/material'
 import { Container } from '@mui/system'
-import {useQuery} from '@apollo/client';
+import {OperationVariables, useQuery} from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useData } from './Provider/DataProvider';
+import { useData, Continent } from './Provider/DataProvider';
 
 type Props = {}
 
@@ -14,7 +14,7 @@ export default function Home({}: Props) {
     const [selection, setSelection] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const {data, loading, error, refetch} = useQuery(AllContinents, {client});
+    const {data, loading, error, refetch} = useQuery<{continents:[Continent]}, OperationVariables>(AllContinents, {client});
 
     useEffect(() => {
       return () => {
@@ -27,7 +27,7 @@ export default function Home({}: Props) {
     const handleExplore = ()=>{
         (!selection)
         ?setAlertMessage('Please select a Continent')
-        :navigate({pathname:'/continent',search:`?code=${selection}`},{state:data.continents.find((v:any)=>v.code===selection)})
+        :navigate({pathname:'/continent',search:`?code=${selection}`},{state:data?.continents?.find((v:any)=>v.code===selection)})
     }
     
     const handleInfo = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -136,7 +136,7 @@ export default function Home({}: Props) {
                         >
                             {loading&&<CircularProgress sx={{ml:2}} />}
                             <MenuItem value={''} key={'empty'}>None</MenuItem>
-                            {data?.continents?.map((v:{name:string,code:string},index:number)=><MenuItem value={v.code} key={index+v.code}>{v.name}</MenuItem>)}
+                            {data?.continents?.map((v,index:number)=><MenuItem value={v.code} key={index+v.code}>{v.name}</MenuItem>)}
                         </Select>
                         </FormControl>
                         <Button id='search-button' variant={'contained'} onClick={handleExplore}>
