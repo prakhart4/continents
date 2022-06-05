@@ -1,5 +1,5 @@
-import { Close, Info } from '@mui/icons-material';
-import { Alert, AppBar, Box, Button, Card, CircularProgress, Collapse, FormControl, Grid, IconButton, InputLabel, MenuItem, Popover, Select, Toolbar, Typography } from '@mui/material'
+import { Close, Info, Refresh } from '@mui/icons-material';
+import { Alert, AppBar, Box, Button, Card, CircularProgress, Collapse, FormControl, IconButton, InputLabel, MenuItem, Popover, Select, Toolbar, Typography } from '@mui/material'
 import { Container } from '@mui/system'
 import {useQuery} from '@apollo/client';
 import { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ export default function Home({}: Props) {
     const [selection, setSelection] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const {data, loading, error} = useQuery(AllContinents, {client});
+    const {data, loading, error, refetch} = useQuery(AllContinents, {client});
 
     useEffect(() => {
       return () => {
@@ -52,10 +52,11 @@ export default function Home({}: Props) {
                     mr={2}
                     />
                     <Typography variant="h5" component="div" sx={{ flexGrow: 1, textAlign:'center' }}>
-                        Continent Explorer
+                        Continents
                     </Typography>
                     <Box width={"100px"} textAlign={'right'}>
                         <IconButton
+                            id='info-Button'
                             size="large"
                             color="inherit"
                             aria-label="menu"
@@ -80,11 +81,28 @@ export default function Home({}: Props) {
             </AppBar>
             {<Collapse in={!!alertMessage||!!error}>
                 <Toolbar/>
-                {error&&<Alert severity="error">{error.message}</Alert>}
+                {error&&<Alert
+                severity="error"
+                action={
+                    <IconButton
+                    id='refresh-Button'
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                        refetch();
+                    }}
+                    >
+                    <Refresh fontSize="inherit" />
+                    </IconButton>
+                }>
+                    {error.message}
+                </Alert>}
                 {alertMessage&&<Alert
                 severity="warning"
                 action={
                     <IconButton
+                    id='close-Button'
                     aria-label="close"
                     color="inherit"
                     size="small"
@@ -104,14 +122,14 @@ export default function Home({}: Props) {
                     <Typography variant='h4' mb={3}>
                         Choose a continent:
                     </Typography>
-                    <Box display={'flex'}>
-                        <FormControl size='small' sx={{flex:1, mr:2,}}>
+                    <Box display={'flex'} flexDirection={{xs:'column',md:'unset'}}>
+                        <FormControl size='small' sx={{flex:1, mr:{xs:'unset',md:2}, mb:{xs:2,md:'unset'}}}>
                         <InputLabel size='small' id="Cotinent-selector">Continent</InputLabel>
                         <Select
                         label={'Continent'}
                         placeholder='Continent'
                         onClick={()=>setAlertMessage('')}
-                        id='Continent Selector'
+                        id='continent-selector'
                         size={'small'}
                         value={selection}
                         onChange={e=>setSelection(e.target.value)}
@@ -121,7 +139,7 @@ export default function Home({}: Props) {
                             {data?.continents?.map((v:{name:string,code:string},index:number)=><MenuItem value={v.code} key={index+v.code}>{v.name}</MenuItem>)}
                         </Select>
                         </FormControl>
-                        <Button variant={'contained'} onClick={handleExplore}>
+                        <Button id='search-button' variant={'contained'} onClick={handleExplore}>
                             Explore
                         </Button>
                     </Box>
