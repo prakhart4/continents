@@ -1,10 +1,10 @@
 import { Close, Info, Refresh } from '@mui/icons-material';
 import { Alert, AppBar, Box, Button, Card, CircularProgress, Collapse, FormControl, IconButton, InputLabel, MenuItem, Popover, Select, Toolbar, Typography } from '@mui/material'
 import { Container } from '@mui/system'
-import {OperationVariables, useQuery} from '@apollo/client';
+import {useQuery} from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useData, Continent } from './Provider/DataProvider';
+import { useData, allContinentsVariables, allContinents } from './Provider/DataProvider';
 
 type Props = {}
 
@@ -14,7 +14,10 @@ export default function Home({}: Props) {
     const [selection, setSelection] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const {data, loading, error, refetch} = useQuery<{continents:[Continent]}, OperationVariables>(allContinents, {client});
+    const {data, loading, error, refetch} = useQuery<allContinents, allContinentsVariables>(
+        allContinents,
+        {client}
+    );
 
     useEffect(() => {
       return () => {

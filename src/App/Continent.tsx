@@ -1,8 +1,8 @@
-import { OperationVariables, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { ArrowBack, FormatTextdirectionLToR, FormatTextdirectionRToL, Home, Refresh } from '@mui/icons-material';
 import { Alert, AppBar, Box, Card, CardContent, CardHeader, Chip, CircularProgress, Divider, Grid, IconButton, Toolbar, Typography } from '@mui/material'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { useData, Country } from './Provider/DataProvider';
+import { useData, countrienByCode, countrienByCodeVariables } from './Provider/DataProvider';
 
 type Props = {}
 
@@ -11,7 +11,13 @@ export default function Continent({}: Props) {
     const {client, countrienByCode} = useData();
     const {state}:{state:any} = useLocation()
     let [searchParams] = useSearchParams();
-    const {data, loading, error, refetch} = useQuery<{countries:[Country]}, OperationVariables>(countrienByCode(searchParams.get('code')), {client});
+    const {data, loading, error, refetch} = useQuery<countrienByCode, countrienByCodeVariables>(
+        countrienByCode,
+        {
+            variables: {code : searchParams.get('code')||undefined},
+            client:client
+        }
+    );
   
     return (
         <Box display={'flex'} flexDirection='column' minHeight={'100vh'}>

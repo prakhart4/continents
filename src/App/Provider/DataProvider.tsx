@@ -6,7 +6,7 @@ type Props = {children:any}
 interface IWrapper {
     client:ApolloClient<NormalizedCacheObject>;
     allContinents:DocumentNode;
-    countrienByCode:(code: any) => DocumentNode;
+    countrienByCode:DocumentNode;
 }
 
 const DataContext = createContext<IWrapper | null>(null);
@@ -14,35 +14,33 @@ const DataContext = createContext<IWrapper | null>(null);
 export default function DataProvider({children}: Props) {
 
     const client = new ApolloClient({
-        cache: new InMemoryCache(),
-        uri: 'https://countries.trevorblades.com'
+      cache: new InMemoryCache(),
+      uri: 'https://countries.trevorblades.com'
     });
 
     const allContinents = gql`
-    {
-    continents {
-        name
-        code
-    }
-    }
+      query allContinents {
+        continents {
+          name
+          code
+        }
+      }
     `;
     
-    const countrienByCode = (code:any) => gql`
-    {
-    countries(filter:{
-        continent:{eq:"${code}"}
-    }) {
-        name
-        currency
-        languages{
-        name
-        native
-        rtl
+    const countrienByCode = gql`
+      query countrienByCode($code:String!) {
+        countries(filter:{continent:{eq:$code}}) {
+          name
+          currency
+          languages{
+              name
+              native
+              rtl
+            }
+          capital
+          code
         }
-        capital
-        code
-    }
-    }
+      }
     `;
 
     const wrapped = {
@@ -64,7 +62,22 @@ export const useData = () => {
   return dataProvider;
 };
 
+//schema
+
 type ID = string; //continent codes
+
+type Language = {
+  code: ID,
+  name?: String,
+  native?: String,
+  rtl: Boolean,
+}
+
+type State = {
+  code?: String,
+  name: String,
+  country: Country,
+}
 
 export type Country = {
   code: ID,
@@ -86,15 +99,8 @@ export type Continent = {
   countries: [Country],
 }
 
-type Language = {
-  code: ID,
-  name?: String,
-  native?: String,
-  rtl: Boolean,
-}
+export interface allContinents {continents:[Continent]}
+export interface allContinentsVariables {}
 
-type State = {
-  code?: String,
-  name: String,
-  country: Country,
-}
+export interface countrienByCode {countries:[Country]}
+export interface countrienByCodeVariables {code?:ID}
