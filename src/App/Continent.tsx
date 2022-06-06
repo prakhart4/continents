@@ -18,6 +18,7 @@ export default function Continent({}: Props) {
             <AppBar position={'sticky'}>
                 <Toolbar>
                     <IconButton
+                        edge='start'
                         id='back-Button'
                         size="large"
                         color="inherit"
@@ -31,9 +32,10 @@ export default function Continent({}: Props) {
                         {state?.code&&`(${state?.code})`}
                     </Typography>
                     <IconButton
+                        edge='end'
                         id='home-Button'
                         size="large"
-                        edge="start"
+                        // edge="start"
                         color="inherit"
                         aria-label="Home"
                         onClick={()=>navigate('/',{replace:true})}
@@ -47,6 +49,7 @@ export default function Continent({}: Props) {
                 severity="error"
                 action={
                     <IconButton
+                    edge='end'
                     id='refresh-Button'
                     aria-label="close"
                     color="inherit"

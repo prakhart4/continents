@@ -10,11 +10,11 @@ type Props = {}
 
 export default function Home({}: Props) {
     const navigate = useNavigate();
-    const {client, AllContinents} = useData()
+    const {client, allContinents} = useData()
     const [selection, setSelection] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    const {data, loading, error, refetch} = useQuery<{continents:[Continent]}, OperationVariables>(AllContinents, {client});
+    const {data, loading, error, refetch} = useQuery<{continents:[Continent]}, OperationVariables>(allContinents, {client});
 
     useEffect(() => {
       return () => {
@@ -56,6 +56,7 @@ export default function Home({}: Props) {
                     </Typography>
                     <Box width={"100px"} textAlign={'right'}>
                         <IconButton
+                            edge='end'
                             id='info-Button'
                             size="large"
                             color="inherit"

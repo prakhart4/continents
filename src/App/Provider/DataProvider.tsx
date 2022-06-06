@@ -5,7 +5,7 @@ type Props = {children:any}
 
 interface IWrapper {
     client:ApolloClient<NormalizedCacheObject>;
-    AllContinents:DocumentNode;
+    allContinents:DocumentNode;
     countrienByCode:(code: any) => DocumentNode;
 }
 
@@ -18,7 +18,7 @@ export default function DataProvider({children}: Props) {
         uri: 'https://countries.trevorblades.com'
     });
 
-    const AllContinents = gql`
+    const allContinents = gql`
     {
     continents {
         name
@@ -47,7 +47,7 @@ export default function DataProvider({children}: Props) {
 
     const wrapped = {
         client,
-        AllContinents,
+        allContinents,
         countrienByCode
     }
 
@@ -72,8 +72,8 @@ export type Country = {
   native: String,
   phone: String,
   continent: Continent,
-  capital: String,
-  currency: String,
+  capital?: String,
+  currency?: String,
   languages: [Language],
   emoji: String,
   emojiU: String,
@@ -88,13 +88,13 @@ export type Continent = {
 
 type Language = {
   code: ID,
-  name: String,
-  native: String,
+  name?: String,
+  native?: String,
   rtl: Boolean,
 }
 
 type State = {
-  code: String,
+  code?: String,
   name: String,
   country: Country,
 }
