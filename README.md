@@ -1,7 +1,5 @@
 # Continents
 
-An assignment for salesbeat that shows a list of countries in a continent
-
 Web site: https://continents-salesbeat.web.app/
 
 How it works:</br>
